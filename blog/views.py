@@ -1,8 +1,7 @@
-from urllib import request
 from django.shortcuts import render, get_object_or_404
-from .models import Post
 from django.views.generic import ListView, DetailView
 
+from .models import Post
 
 # Create your views here.
 
@@ -26,5 +25,10 @@ class AllPostsView(ListView):
 class PostDetailView(DetailView):
       template_name = "blog/post-detail.html"
       model = Post
+      
+      def get_context_data(self, **kwargs):
+            context = super().get_context_data(**kwargs)
+            context["post_tags"] = self.object.tags.all()
+            return 
       
 
