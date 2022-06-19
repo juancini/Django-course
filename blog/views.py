@@ -79,13 +79,10 @@ class ReadLaterView(View):
         if stored_posts is None:
             stored_posts = []
         
-        # this POST comes from read-later button in post-detail.html
-        stored_posts.append(int(request.POST["post_id"]))
-        
         post_id = int(request.POST["post_id"])
         
         if post_id not in stored_posts:
-            stored_posts.append()
+            stored_posts.append(post_id)
             request.session["stored_posts"] = stored_posts
             
         return HttpResponseRedirect("/")
