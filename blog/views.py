@@ -29,12 +29,14 @@ class AllPostsView(ListView):
 class PostDetailView(View):
     def is_stored_post(self, request, post_id):
         # Check if this post is saved
-        stored_posts = request.session.get("stoered_posts")
+        stored_posts = request.session.get("stored_posts")
         if stored_posts is not None:
             is_saved_for_later = post_id in stored_posts
         else:
             is_saved_for_later = False
-            
+        
+        print("IS_STORED_VALUE: ")
+        print(is_saved_for_later)
         return is_saved_for_later
 
     
@@ -96,9 +98,12 @@ class ReadLaterView(View):
         
         post_id = int(request.POST["post_id"])
         
+        # if not found, add the post to read later, else, remove it
         if post_id not in stored_posts:
             stored_posts.append(post_id)
             request.session["stored_posts"] = stored_posts
+        else: 
+            stored_posts.remove(post_id)
             
         return HttpResponseRedirect("/")
             
